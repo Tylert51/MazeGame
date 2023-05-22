@@ -4,33 +4,38 @@ import java.awt.*;
 public class GamePanel extends JPanel implements Runnable {
 
     //Screen Settings
-    final int ORIGINAL_TILE_SIZE = 16; // 16x16 tile
-    final int SCALE = 3;
+    public final int ORIGINAL_TILE_SIZE = 16; // 16x16 tile
+    public final int SCALE = 3;
 
-    final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; //48x48 tile
-    final int MAX_SCREEN_COL = 16;
-    final int MAX_SCREEN_ROW = 12;
-    final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 pixels
-    final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // 576 pixels
+    public final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; //48x48 tile
+    public final int MAX_SCREEN_COL = 16;
+    public final int MAX_SCREEN_ROW = 12;
+    public final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 pixels
+    public final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // 576 pixels
 
-    final double FPS = 60;
+    public final double FPS = 60;
 
-    Thread gameThread;
-    KeyHandler keyH = new KeyHandler();
+    private Thread gameThread;
+    public KeyHandler keyH;
+    public Player player;
 
 
-    // Set Player's default Position
-
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 4;
+    //temp
+    int x = 100;
+    int y = 100;
+    int speed = 4;
 
     public GamePanel() {
+
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setBackground(Color.black);
         setDoubleBuffered(true);
         addKeyListener(keyH);
         setFocusable(true);
+
+        keyH = new KeyHandler();
+        player = new Player(this, keyH);
+
     }
 
     public void startGameThread() {
@@ -70,17 +75,23 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
 
+        //player.update();
+
+
         if(keyH.isUpPressed()) {
-            playerY -= playerSpeed;
+            y -= speed;
 
-        } else if (keyH.isDownPressed()) {
-            playerY += playerSpeed;
+        }
+        if (keyH.isDownPressed()) {
+            y += speed;
 
-        } else if (keyH.isLeftPressed()) {
-            playerX -= playerSpeed;
+        }
+        if (keyH.isLeftPressed()) {
+            x -= speed;
 
-        } else if (keyH.isRightPressed()) {
-            playerX += playerSpeed;
+        }
+        if (keyH.isRightPressed()) {
+            x += speed;
 
         }
 
@@ -91,8 +102,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        g2.setColor(Color.WHITE);
-
-        g2.fillRect(playerX, playerY, TILE_SIZE, TILE_SIZE);
+        player.draw(g2);
     }
+
+
 }
