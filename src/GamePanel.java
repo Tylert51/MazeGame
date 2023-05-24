@@ -4,20 +4,25 @@ import java.awt.*;
 public class GamePanel extends JPanel implements Runnable {
 
     //Screen Settings
-    public final int ORIGINAL_TILE_SIZE = 16; // 16x16 tile
+    public final int ORIGINAL_TILE_COL = 16;
+    public final int ORIGINAL_TILE_ROW = 20;
     public final int SCALE = 3;
 
-    public final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; //48x48 tile
+    public final int TILE_SIZE_COL = ORIGINAL_TILE_COL * SCALE;
+    public final int TILE_SIZE_ROW = ORIGINAL_TILE_ROW * SCALE;
     public final int MAX_SCREEN_COL = 16;
     public final int MAX_SCREEN_ROW = 12;
-    public final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 pixels
-    public final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // 576 pixels
+    public final int SCREEN_WIDTH = TILE_SIZE_COL * MAX_SCREEN_COL;
+    public final int SCREEN_HEIGHT = TILE_SIZE_ROW * MAX_SCREEN_ROW;
 
     public final double FPS = 60;
 
     private Thread gameThread;
     public KeyHandler keyH;
     public Player player;
+    public Maze[] maze;
+
+    public int currentLevel;
 
 
     public GamePanel() {
@@ -29,6 +34,12 @@ public class GamePanel extends JPanel implements Runnable {
 
         keyH = new KeyHandler();
         player = new Player(this, keyH);
+
+        maze = new Maze[4];
+
+        for(int i = 0; i < 4; i++) {
+            maze[i] = new Maze(this, i + 1);
+        }
 
         addKeyListener(keyH);
 
@@ -80,6 +91,8 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
+
+        maze[0].draw(g2);
 
         player.draw(g2);
     }

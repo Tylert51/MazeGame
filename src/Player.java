@@ -14,11 +14,18 @@ public class Player {
 
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     public String direction;
+    public BufferedImage currImg;
+
+    public int spriteCounter;
+    public boolean spriteNum1;
 
     public Player (GamePanel gp, KeyHandler kh) {
 
         gamePanel = gp;
         keyH = kh;
+
+        spriteCounter = 0;
+        spriteNum1 = true;
 
         setDefaultValues();
         getPlayerImage();
@@ -45,7 +52,9 @@ public class Player {
             left2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_2.png"));
 
             right1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
+            right2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_2.png"));
+
+            currImg = down1;
 
 
         } catch (IOException e) {
@@ -56,24 +65,40 @@ public class Player {
 
     public void update() {
 
-        if(keyH.isUpPressed()) {
-            direction = "up";
-            y -= speed;
+        if(keyH.isUpPressed() || keyH.isDownPressed() || keyH.isLeftPressed() || keyH.isRightPressed()) {
 
-        }
-        if (keyH.isDownPressed()) {
-            direction = "down";
-            y += speed;
+            if (keyH.isUpPressed()) {
+                direction = "up";
+                y -= speed;
 
-        }
-        if (keyH.isLeftPressed()) {
-            direction = "left";
-            x -= speed;
+            }
+            if (keyH.isDownPressed()) {
+                direction = "down";
+                y += speed;
 
-        }
-        if (keyH.isRightPressed()) {
-            direction = "right";
-            x += speed;
+            }
+            if (keyH.isLeftPressed()) {
+                direction = "left";
+                x -= speed;
+
+            }
+            if (keyH.isRightPressed()) {
+                direction = "right";
+                x += speed;
+
+            }
+
+            spriteCounter++;
+            if (spriteCounter > 12) {
+                spriteNum1 = !spriteNum1;
+                spriteCounter = 0;
+            }
+
+        } else {
+
+            if (currImg.equals(left2) || currImg.equals(right2)) {
+                spriteNum1 = true;
+            }
 
         }
 
@@ -81,31 +106,42 @@ public class Player {
 
     public void draw(Graphics2D g2) {
 
-        g2.setColor(Color.WHITE);
-
-        //g2.fillRect(x, y, gamePanel.TILE_SIZE, gamePanel.TILE_SIZE);
-
-        BufferedImage img = null;
-
         switch (direction) {
             case "up":
-                img = up1;
+                if (spriteNum1) {
+                    currImg = up1;
+                } else {
+                    currImg = up2;
+                }
+
                 break;
 
             case "down":
-                img = down1;
+                if(spriteNum1) {
+                    currImg = down1;
+                } else {
+                    currImg = down2;
+                }
                 break;
 
             case "left":
-                img = left1;
+                if(spriteNum1) {
+                    currImg = left1;
+                } else {
+                    currImg = left2;
+                }
                 break;
 
             case "right":
-                img = right1;
+                if (spriteNum1) {
+                    currImg = right1;
+                } else {
+                    currImg = right2;
+                }
                 break;
         }
 
-        g2.drawImage(img, x, y, gamePanel.TILE_SIZE, gamePanel.TILE_SIZE, null);
+        g2.drawImage(currImg, x, y, gamePanel.TILE_SIZE_COL, gamePanel.TILE_SIZE_ROW - 12, null);
 
 
 

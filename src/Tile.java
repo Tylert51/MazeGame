@@ -1,15 +1,33 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Tile {
 
     private ArrayList<String> availableMoves;
-    private ImageIcon image;
+    private BufferedImage image;
 
     public Tile(ArrayList<String> available, String fileName) {
 
         availableMoves = available;
-        image = new ImageIcon(getClass().getResource(fileName));
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream(fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public Tile(String fileName) {
+
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream(fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -17,7 +35,7 @@ public class Tile {
         return availableMoves;
     }
 
-    public ImageIcon getImage() {
+    public BufferedImage getImage() {
         return image;
     }
 }
