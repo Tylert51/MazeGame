@@ -19,7 +19,7 @@ public class Maze {
 
         mazeMap = new Tile[12][16];
 
-        String[][] mazeIndx = MazeDatabaseReader.getMazeIndexes("src/level_one.txt");
+        String[][] mazeIndx = MazeDatabaseReader.getMazeIndexes("src/mazes/level_one.txt");
 
         instantiatePossibleTiles();
 
