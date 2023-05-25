@@ -107,38 +107,34 @@ public class Player {
     public void draw(Graphics2D g2) {
 
         switch (direction) {
-            case "up":
+            case "up" -> {
                 if (spriteNum1) {
                     currImg = up1;
                 } else {
                     currImg = up2;
                 }
-
-                break;
-
-            case "down":
-                if(spriteNum1) {
+            }
+            case "down" -> {
+                if (spriteNum1) {
                     currImg = down1;
                 } else {
                     currImg = down2;
                 }
-                break;
-
-            case "left":
-                if(spriteNum1) {
+            }
+            case "left" -> {
+                if (spriteNum1) {
                     currImg = left1;
                 } else {
                     currImg = left2;
                 }
-                break;
-
-            case "right":
+            }
+            case "right" -> {
                 if (spriteNum1) {
                     currImg = right1;
                 } else {
                     currImg = right2;
                 }
-                break;
+            }
         }
 
         g2.drawImage(currImg, x, y, gamePanel.TILE_SIZE_COL, gamePanel.TILE_SIZE_ROW - 12, null);

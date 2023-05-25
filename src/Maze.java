@@ -1,10 +1,13 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.IOException;
 
 public class Maze {
 
     private Tile[][] mazeMap;
     private int level;
     private GamePanel gamePanel;
+    private Tile[] possibleTiles;
 
     public Maze(GamePanel panel, Tile[][] map, int lvl) {
         gamePanel = panel;
@@ -16,13 +19,9 @@ public class Maze {
         gamePanel = panel;
         level = lvl;
 
-        mazeMap = new Tile[16][20];
+        mazeMap = new Tile[12][16];
 
-        for(int i = 0; i < 16; i++) {
-            for(int j = 0; j < 20; j++) {
-                mazeMap[i][j] = new Tile("/tiles/straight.png");
-            }
-        }
+        instantiatePossibleTiles();
     }
 
     public Tile[][] getMazeMap() {
@@ -41,9 +40,40 @@ public class Maze {
 
         for(int i = 0; i < mazeMap.length; i++) {
             for(int j = 0; j < mazeMap[0].length; j++) {
-                g2.drawImage(mazeMap[i][j].getImage(), i * gamePanel.TILE_SIZE_COL, j * gamePanel.TILE_SIZE_ROW, 16 * gamePanel.SCALE, 20 * gamePanel.SCALE, null);
+
+                g2.drawImage(mazeMap[i][j].getImage(), j * gamePanel.TILE_SIZE_COL, i * gamePanel.TILE_SIZE_ROW, 16 * gamePanel.SCALE, 20 * gamePanel.SCALE, null);
+
             }
         }
+
+        g2.drawImage(new Tile("/tiles/start_end/start.png").getImage(), 0, (mazeMap.length - 1) * gamePanel.TILE_SIZE_ROW, 16 * gamePanel.SCALE, 20 * gamePanel.SCALE, null);
+
+        g2.drawImage(new Tile("/tiles/start_end/start.png").getImage(), (mazeMap[0].length - 1) * gamePanel.TILE_SIZE_COL, 0, 16 * gamePanel.SCALE, 20 * gamePanel.SCALE, null);
+
+    }
+
+    public void instantiatePossibleTiles() {
+        possibleTiles = new Tile[15];
+
+        possibleTiles[0] = new Tile("/tiles/one/bottom.png");
+        possibleTiles[1] = new Tile("/tiles/one/left.png");
+        possibleTiles[2] = new Tile("/tiles/one/right.png");
+        possibleTiles[3] = new Tile("/tiles/one/up.png");
+
+        possibleTiles[4] = new Tile("/tiles/two/bottom_left.png");
+        possibleTiles[5] = new Tile("/tiles/two/bottom_right.png");
+        possibleTiles[6] = new Tile("/tiles/two/top_left.png");
+        possibleTiles[7] = new Tile("/tiles/two/top_right.png");
+
+        possibleTiles[8] = new Tile("/tiles/three/down_open.png");
+        possibleTiles[9] = new Tile("/tiles/three/left_open.png");
+        possibleTiles[10] = new Tile("/tiles/three/right_open.png");
+        possibleTiles[11] = new Tile("/tiles/three/up_open.png");
+
+        possibleTiles[12] = new Tile("/tiles/straight/right.png");
+        possibleTiles[13] = new Tile("/tiles/straight/up.png");
+
+        possibleTiles[14] = new Tile("/tiles/start_end/start.png");
     }
 
 }

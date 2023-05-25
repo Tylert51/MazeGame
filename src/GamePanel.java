@@ -6,7 +6,7 @@ public class GamePanel extends JPanel implements Runnable {
     //Screen Settings
     public final int ORIGINAL_TILE_COL = 16;
     public final int ORIGINAL_TILE_ROW = 20;
-    public final int SCALE = 3;
+    public final int SCALE = 4;
 
     public final int TILE_SIZE_COL = ORIGINAL_TILE_COL * SCALE;
     public final int TILE_SIZE_ROW = ORIGINAL_TILE_ROW * SCALE;
@@ -59,6 +59,8 @@ public class GamePanel extends JPanel implements Runnable {
         long lastTime = System.nanoTime();
         long currentTime;
 
+
+
         while (gameThread != null) {
 
             currentTime = System.nanoTime();
@@ -96,6 +98,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         player.draw(g2);
     }
+
 
 
 }
