@@ -137,7 +137,7 @@ public class Player {
             }
         }
 
-        g2.drawImage(currImg, x, y, gamePanel.TILE_SIZE_COL, gamePanel.TILE_SIZE_ROW - 12, null);
+        g2.drawImage(currImg, x, y, currImg.getWidth() * gamePanel.SCALE, currImg.getHeight() * gamePanel.SCALE, null);
 
 
 

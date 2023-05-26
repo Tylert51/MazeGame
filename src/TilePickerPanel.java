@@ -1,7 +1,7 @@
 import javax.swing.JPanel;
 import java.awt.*;
 
-public class GamePanel extends JPanel implements Runnable {
+public class TilePickerPanel extends JPanel implements Runnable {
 
     //Screen Settings
     public final int ORIGINAL_TILE_COL = 20;
@@ -10,46 +10,34 @@ public class GamePanel extends JPanel implements Runnable {
 
     public final int TILE_SIZE_COL = ORIGINAL_TILE_COL * SCALE;
     public final int TILE_SIZE_ROW = ORIGINAL_TILE_ROW * SCALE;
-    public final int MAX_SCREEN_COL = 16;
-    public final int MAX_SCREEN_ROW = 12;
+    public final int MAX_SCREEN_COL = 4;
+    public final int MAX_SCREEN_ROW = 4;
     public final int SCREEN_WIDTH = TILE_SIZE_COL * MAX_SCREEN_COL;
     public final int SCREEN_HEIGHT = TILE_SIZE_ROW * MAX_SCREEN_ROW;
 
     public final double FPS = 60;
 
     private Thread gameThread;
-    private KeyHandler keyH;
-    private Player player;
-    private Maze[] maze;
-    private DrawableMaze drawableMaze;
-    private TilePickerPanel drawingPanel;
-
-    public int currentLevel;
+    public KeyHandler keyH;
+    public Player player;
+    public GamePanel gamePanel;
+    public DrawableMaze drawableMaze;
 
 
-    public GamePanel() {
+    public TilePickerPanel(GamePanel panel, Player player) {
 
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setBackground(Color.black);
         setDoubleBuffered(true);
         setFocusable(true);
 
+        gamePanel = panel;
         keyH = new KeyHandler();
-        player = new Player(this, keyH);
+        this.player = player;
 
-        maze = new Maze[4];
-
-        for(int i = 0; i < 4; i++) {
-            maze[i] = new Maze(this, i + 1);
-        }
-
-        //drawableMaze = new DrawableMaze(this);
+        drawableMaze = new DrawableMaze(this, gamePanel, keyH);
 
         addKeyListener(keyH);
-
-        drawingPanel = new TilePickerPanel(this, player);
-
-
 
     }
 
@@ -92,7 +80,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
 
-        player.update();
+        drawableMaze.update();
 
     }
 
@@ -102,13 +90,11 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        maze[0].draw(g2);
+        drawableMaze.draw(g2);
 
-        player.draw(g2);
+        //player.draw(g2);
     }
 
-    public TilePickerPanel getDrawingPanel() {
-        return drawingPanel;
-    }
+
 
 }

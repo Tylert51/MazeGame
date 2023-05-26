@@ -2,15 +2,16 @@ import java.awt.*;
 
 public class Maze {
 
-    private Tile[][] mazeMap;
-    private int level;
-    private GamePanel gamePanel;
-    private Tile[] possibleTiles;
+    protected Tile[][] mazeMap;
+    protected int level;
+    protected GamePanel gamePanel;
+    protected Tile[] possibleTiles;
 
     public Maze(GamePanel panel, Tile[][] map, int lvl) {
         gamePanel = panel;
         mazeMap = map;
         level = lvl;
+        instantiatePossibleTiles();
     }
 
     public Maze(GamePanel panel, int lvl) {
@@ -43,19 +44,19 @@ public class Maze {
         for(int i = 0; i < mazeMap.length; i++) {
             for(int j = 0; j < mazeMap[0].length; j++) {
 
-                g2.drawImage(mazeMap[i][j].getImage(), (j * gamePanel.TILE_SIZE_COL), (i * gamePanel.TILE_SIZE_ROW), 16 * gamePanel.SCALE, 20 * gamePanel.SCALE, null);
+                g2.drawImage(mazeMap[i][j].getImage(), (j * gamePanel.TILE_SIZE_COL), (i * gamePanel.TILE_SIZE_ROW), 20 * gamePanel.SCALE, 20 * gamePanel.SCALE, null);
 
             }
         }
 
-        g2.drawImage(new Tile("/tiles/start_end/start.png").getImage(), 0, (mazeMap.length - 1) * gamePanel.TILE_SIZE_ROW, 16 * gamePanel.SCALE, 20 * gamePanel.SCALE, null);
+        g2.drawImage(new Tile("/tiles/start_end/start.png").getImage(), 0, (mazeMap.length - 1) * gamePanel.TILE_SIZE_ROW, 20 * gamePanel.SCALE, 20 * gamePanel.SCALE, null);
 
-        g2.drawImage(new Tile("/tiles/start_end/start.png").getImage(), (mazeMap[0].length - 1) * gamePanel.TILE_SIZE_COL, 0, 16 * gamePanel.SCALE, 20 * gamePanel.SCALE, null);
+        g2.drawImage(new Tile("/tiles/start_end/start.png").getImage(), (mazeMap[0].length - 1) * gamePanel.TILE_SIZE_COL, 0, 20 * gamePanel.SCALE, 20 * gamePanel.SCALE, null);
 
     }
 
     public void instantiatePossibleTiles() {
-        possibleTiles = new Tile[16];
+        possibleTiles = new Tile[17];
 
         possibleTiles[0] = new Tile("/tiles/one/bottom.png");
         possibleTiles[1] = new Tile("/tiles/one/left.png");
@@ -78,6 +79,8 @@ public class Maze {
         possibleTiles[14] = new Tile("/tiles/start_end/start.png");
 
         possibleTiles[15] = new Tile("/tiles/empty.png");
+
+        possibleTiles[16] = new Tile("/tiles/two/top_left_blue.png");
     }
 
     public void generateRandomTileSet(Tile[][] map) {
@@ -99,8 +102,10 @@ public class Maze {
             if(ind != 0) {
                 maze[i][j] = possibleTiles[ind];
             } else {
-                int rand = (int) (Math.random() * 14);
-                maze[i][j] = possibleTiles[rand];
+                //int rand = (int) (Math.random() * 14);
+                //maze[i][j] = possibleTiles[rand];
+
+                maze[i][j] = possibleTiles[15];
             }
 
             }

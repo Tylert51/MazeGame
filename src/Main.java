@@ -16,7 +16,21 @@ public class Main {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
 
+
+        JFrame tilePick = new JFrame();
+        tilePick.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        tilePick.setResizable(false);
+        tilePick.setTitle("Tile Picker");
+
+        TilePickerPanel drawingPanel = gamePanel.getDrawingPanel();
+        tilePick.add(drawingPanel);
+        tilePick.pack();
+        tilePick.setLocation(40, 175);
+        tilePick.setVisible(true);
+
+
         gamePanel.startGameThread();
+        drawingPanel.startGameThread();
 
     }
 }
