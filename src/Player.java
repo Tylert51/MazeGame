@@ -5,19 +5,22 @@ import java.io.IOException;
 
 public class Player {
 
-    public int x;
-    public int y;
-    public int speed;
+    private int xCoord;
+    private int yCoord;
+    private int speed;
 
-    public GamePanel gamePanel;
-    public KeyHandler keyH;
+    private GamePanel gamePanel;
+    private KeyHandler keyH;
 
-    public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-    public String direction;
-    public BufferedImage currImg;
+    private BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
+    private String direction;
+    private BufferedImage currImg;
 
-    public int spriteCounter;
-    public boolean spriteNum1;
+    private int spriteCounter;
+    private boolean spriteNum1;
+
+    private Rectangle collisionArea;
+    private boolean colliding;
 
     public Player (GamePanel gp, KeyHandler kh) {
 
@@ -29,11 +32,14 @@ public class Player {
 
         setDefaultValues();
         getPlayerImage();
+
+        colliding = false;
+        collisionArea = new Rectangle(8, 3, 32, 45);
     }
 
     public void setDefaultValues() {
-        x = 100;
-        y = 100;
+        xCoord = 100;
+        yCoord = 100;
         speed = 4;
         direction = "down";
     }
@@ -69,22 +75,22 @@ public class Player {
 
             if (keyH.isUpPressed()) {
                 direction = "up";
-                y -= speed;
+                yCoord -= speed;
 
             }
             if (keyH.isDownPressed()) {
                 direction = "down";
-                y += speed;
+                yCoord += speed;
 
             }
             if (keyH.isLeftPressed()) {
                 direction = "left";
-                x -= speed;
+                xCoord -= speed;
 
             }
             if (keyH.isRightPressed()) {
                 direction = "right";
-                x += speed;
+                xCoord += speed;
 
             }
 
@@ -137,10 +143,19 @@ public class Player {
             }
         }
 
-        g2.drawImage(currImg, x, y, currImg.getWidth() * gamePanel.SCALE, currImg.getHeight() * gamePanel.SCALE, null);
+        g2.drawImage(currImg, xCoord, yCoord, currImg.getWidth() * gamePanel.SCALE, currImg.getHeight() * gamePanel.SCALE, null);
 
+    }
 
+    public int getXCoord() {
+        return xCoord;
+    }
 
+    public int getYCoord() {
+        return yCoord;
+    }
 
+    public Rectangle getCollisionArea() {
+        return collisionArea;
     }
 }

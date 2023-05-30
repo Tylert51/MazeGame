@@ -24,6 +24,8 @@ public class GamePanel extends JPanel implements Runnable {
     private DrawableMaze drawableMaze;
     private TilePickerPanel drawingPanel;
 
+    CollisionChecker collisionChecker = new CollisionChecker(this);
+
     public int currentLevel;
 
 
