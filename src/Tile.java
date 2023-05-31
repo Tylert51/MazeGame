@@ -3,9 +3,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Tile {
+public class Tile implements Serializable {
 
     private ArrayList<String> availableMoves;
     private BufferedImage image;

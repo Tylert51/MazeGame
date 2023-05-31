@@ -18,6 +18,8 @@ public class DrawableMaze extends Maze {
         }
 
         startEndTiles = new int[2][2];
+
+
     }
 
     public void update() {

@@ -158,4 +158,9 @@ public class Player {
     public Rectangle getCollisionArea() {
         return collisionArea;
     }
+
+    public String getDirection() {
+        return direction;
+    }
 }
+

@@ -1,5 +1,6 @@
 import java.awt.*;
 
+
 public class Maze {
 
     protected Tile[][] mazeMap;
