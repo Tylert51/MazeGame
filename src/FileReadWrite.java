@@ -35,7 +35,7 @@ public class FileReadWrite {
         possibleTiles[16] = new Tile("/tiles/two/top_left_blue.png");
 
 
-        FileOutputStream fos = new FileOutputStream("possibleTiles.txt");
+        FileOutputStream fos = new FileOutputStream("src/tileConfig/possibleTiles.txt");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
 
         oos.writeObject(possibleTiles);
@@ -48,7 +48,7 @@ public class FileReadWrite {
 
     public Tile[] readPossibleTiles() throws IOException, ClassNotFoundException {
 
-        FileInputStream fi = new FileInputStream("possibleTiles.txt");
+        FileInputStream fi = new FileInputStream("tileConfig/possibleTiles.txt");
         ObjectInputStream oi = new ObjectInputStream(fi);
 
         // Read objects
