@@ -10,7 +10,7 @@ public class Player {
     private int speed;
 
     private GamePanel gamePanel;
-    private KeyHandler keyH;
+    private KeyHandler keyHandler;
 
     private BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     private String direction;
@@ -25,7 +25,7 @@ public class Player {
     public Player (GamePanel gp, KeyHandler kh) {
 
         gamePanel = gp;
-        keyH = kh;
+        keyHandler = kh;
 
         spriteCounter = 0;
         spriteNum1 = true;
@@ -71,24 +71,24 @@ public class Player {
 
     public void update() {
 
-        if(keyH.isUpPressed() || keyH.isDownPressed() || keyH.isLeftPressed() || keyH.isRightPressed()) {
+        if(keyHandler.isUpPressed() || keyHandler.isDownPressed() || keyHandler.isLeftPressed() || keyHandler.isRightPressed()) {
 
-            if (keyH.isUpPressed()) {
+            if (keyHandler.isUpPressed()) {
                 direction = "up";
                 yCoord -= speed;
 
             }
-            if (keyH.isDownPressed()) {
+            if (keyHandler.isDownPressed()) {
                 direction = "down";
                 yCoord += speed;
 
             }
-            if (keyH.isLeftPressed()) {
+            if (keyHandler.isLeftPressed()) {
                 direction = "left";
                 xCoord -= speed;
 
             }
-            if (keyH.isRightPressed()) {
+            if (keyHandler.isRightPressed()) {
                 direction = "right";
                 xCoord += speed;
 

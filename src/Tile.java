@@ -5,36 +5,25 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class Tile implements Serializable {
+public class Tile {
 
     private ArrayList<String> availableMoves;
     private BufferedImage image;
-    private Rectangle collisionArea;
+    private ArrayList<Rectangle> collisionArea;
     private boolean colliding;
 
-    public Tile(ArrayList<String> available, String fileName) {
-
-        availableMoves = available;
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream(fileName));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        colliding = false;
-
-
-
-    }
 
     public Tile(String fileName) {
 
         try {
             image = ImageIO.read(getClass().getResourceAsStream(fileName));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+
+        collisionArea = new ArrayList<>();
 
     }
 
@@ -43,6 +32,20 @@ public class Tile implements Serializable {
     }
 
     public BufferedImage getImage() {
+
         return image;
+
     }
+
+    public void addAvailableMoves(Rectangle ... hitBoxes) {
+
+        collisionArea.addAll(Arrays.asList(hitBoxes));
+
+    }
+
+    public ArrayList<Rectangle> getCollisionArea() {
+        return collisionArea;
+    }
+
+
 }
