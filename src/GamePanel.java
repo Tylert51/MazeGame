@@ -86,14 +86,35 @@ public class GamePanel extends JPanel implements Runnable {
 
             if(delta >= 1) {
                 // Updates information such character positions
-                update();
+
+                int[] coords = player.getCurrTileCoords();
+
+                if (coords == null) {
+
+                    if (player.getDirection().equals("up")) {
+                        player.move(0, -2);
+                    } else if (player.getDirection().equals("down")) {
+                        player.move(0, 2);
+                    } else if (player.getDirection().equals("left")) {
+                        player.move(-2, 0);
+                    } else if (player.getDirection().equals("right")) {
+                        player.move(2, 0);
+                    }
+
+                } else {
+
+                    update();
+
+                }
+
+
 
                 // Draw: draw the screen with the update information
                 repaint();
 
-                int[] currTileCoords = player.getCurrTileCoords();
-                System.out.println(Arrays.toString(currTileCoords));
-                //System.out.println(collisionChecker.checkTile());
+
+                System.out.println(Arrays.toString(coords));
+                //System.out.println(collisionChecker.checkTile(player));
 
                 delta--;
             }

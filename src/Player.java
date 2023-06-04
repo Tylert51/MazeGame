@@ -13,7 +13,7 @@ public class Player {
     private GamePanel gamePanel;
     private KeyHandler keyHandler;
 
-    private BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
+    private BufferedImage up, down, left, right;
     private String direction;
     private BufferedImage currImg;
 
@@ -25,7 +25,7 @@ public class Player {
     private boolean colliding;
 
     private Tile[][] mazeMap ;
-    private Tile previousTile;
+    //private Tile previousTile;
     private Tile currTile;
 
 
@@ -33,9 +33,6 @@ public class Player {
 
         gamePanel = gp;
         keyHandler = kh;
-
-        spriteCounter = 0;
-        spriteNum1 = true;
 
         setDefaultValues();
         getPlayerImage();
@@ -71,19 +68,15 @@ public class Player {
 
         try {
 
-            up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_2.png"));
+            up = ImageIO.read(getClass().getResourceAsStream("/ghosts/up.png"));
 
-            down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_2.png"));
+            down = ImageIO.read(getClass().getResourceAsStream("/ghosts/down.png"));
 
-            left1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_2.png"));
+            left = ImageIO.read(getClass().getResourceAsStream("/ghosts/left.png"));
 
-            right1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_2.png"));
+            right = ImageIO.read(getClass().getResourceAsStream("/ghosts/right.png"));
 
-            currImg = down1;
+            currImg = down;
 
 
         } catch (IOException e) {
@@ -97,15 +90,13 @@ public class Player {
         if(keyHandler.isUpPressed() || keyHandler.isDownPressed() || keyHandler.isLeftPressed() || keyHandler.isRightPressed()) {
 
             ArrayList<String> availableMoves = new ArrayList<String>();
+
             int[] coords = getCurrTileCoords();
 
-            if(coords == null) {
-                previousTile = currTile;
-                availableMoves = previousTile.getAvailableMoves();
-            } else {
-                currTile = mazeMap[coords[0]] [coords[1]];
-                availableMoves = currTile.getAvailableMoves();
-            }
+
+            currTile = mazeMap[coords[0]] [coords[1]];
+            availableMoves = currTile.getAvailableMoves();
+
 
             setDeafultSpeedValues();
 
@@ -160,12 +151,6 @@ public class Player {
                 spriteCounter = 0;
             }
 
-        } else {
-
-            if (currImg.equals(left2) || currImg.equals(right2)) {
-                spriteNum1 = true;
-            }
-
         }
 
     }
@@ -174,32 +159,16 @@ public class Player {
 
         switch (direction) {
             case "up" -> {
-                if (spriteNum1) {
-                    currImg = up1;
-                } else {
-                    currImg = up2;
-                }
+                currImg = up;
             }
             case "down" -> {
-                if (spriteNum1) {
-                    currImg = down1;
-                } else {
-                    currImg = down2;
-                }
+                currImg = down;
             }
             case "left" -> {
-                if (spriteNum1) {
-                    currImg = left1;
-                } else {
-                    currImg = left2;
-                }
+                currImg = left;
             }
             case "right" -> {
-                if (spriteNum1) {
-                    currImg = right1;
-                } else {
-                    currImg = right2;
-                }
+                currImg = right;
             }
         }
 
@@ -254,6 +223,11 @@ public class Player {
 
     public void setColliding(boolean colliding) {
         this.colliding = colliding;
+    }
+
+    public void move(int x, int y) {
+        xCoord += x;
+        yCoord += y;
     }
 }
 
