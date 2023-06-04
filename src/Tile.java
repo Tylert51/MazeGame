@@ -23,7 +23,8 @@ public class Tile {
             throw new RuntimeException(e);
         }
 
-        collisionArea = new ArrayList<>();
+        collisionArea = new ArrayList<Rectangle>();
+        availableMoves = new ArrayList<String>();
 
     }
 
@@ -37,7 +38,7 @@ public class Tile {
 
     }
 
-    public void addAvailableMoves(Rectangle ... hitBoxes) {
+    public void addCollisionArea(Rectangle ... hitBoxes) {
 
         collisionArea.addAll(Arrays.asList(hitBoxes));
 
@@ -45,6 +46,12 @@ public class Tile {
 
     public ArrayList<Rectangle> getCollisionArea() {
         return collisionArea;
+    }
+
+    public void addAvailableMoves(String ... moves) {
+
+        availableMoves.addAll(Arrays.asList(moves));
+
     }
 
 

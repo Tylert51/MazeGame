@@ -106,47 +106,55 @@ public class Maze {
         // One Line
         possibleTiles[0] = new Tile("/tiles/one/bottom.png");
         rectangle1.setBounds(0 * getScaleFactor(), 19 * getScaleFactor(), 20 * getScaleFactor(), 1 * getScaleFactor());
-        possibleTiles[0].addAvailableMoves(rectangle1);
+        possibleTiles[0].addCollisionArea(rectangle1);
+        possibleTiles[0].addAvailableMoves("left", "right", "up");
 
 
         possibleTiles[1] = new Tile("/tiles/one/left.png");
         rectangle1.setBounds(0 * getScaleFactor(), 0 * getScaleFactor(), 1 * getScaleFactor(), 20 * getScaleFactor());
-        possibleTiles[1].addAvailableMoves(rectangle1);
+        possibleTiles[1].addCollisionArea(rectangle1);
+        possibleTiles[1].addAvailableMoves("down", "right", "up");
 
 
         possibleTiles[2] = new Tile("/tiles/one/right.png");
         rectangle1.setBounds(19 * getScaleFactor(), 0 * getScaleFactor(), 1 * getScaleFactor(), 20 * getScaleFactor());
-        possibleTiles[2].addAvailableMoves(rectangle1);
+        possibleTiles[2].addCollisionArea(rectangle1);
+        possibleTiles[2].addAvailableMoves("left", "down", "up");
 
 
         possibleTiles[3] = new Tile("/tiles/one/up.png");
         rectangle1.setBounds(0 * getScaleFactor(), 0 * getScaleFactor(), 20 * getScaleFactor(), 1 * getScaleFactor());
-        possibleTiles[3].addAvailableMoves(rectangle1);
+        possibleTiles[3].addCollisionArea(rectangle1);
+        possibleTiles[3].addAvailableMoves("left", "right", "down");
 
 
         // Two Lines
         possibleTiles[4] = new Tile("/tiles/two/bottom_left.png");
         rectangle1.setBounds(possibleTiles[1].getCollisionArea().get(0));
         rectangle2.setBounds(possibleTiles[0].getCollisionArea().get(0));
-        possibleTiles[4].addAvailableMoves(rectangle1, rectangle2);
+        possibleTiles[4].addCollisionArea(rectangle1, rectangle2);
+        possibleTiles[4].addAvailableMoves("up", "right");
 
 
         possibleTiles[5] = new Tile("/tiles/two/bottom_right.png");
         rectangle1.setBounds(possibleTiles[0].getCollisionArea().get(0));
         rectangle2.setBounds(possibleTiles[2].getCollisionArea().get(0));
-        possibleTiles[5].addAvailableMoves(rectangle1, rectangle2);
+        possibleTiles[5].addCollisionArea(rectangle1, rectangle2);
+        possibleTiles[5].addAvailableMoves("left", "up");
 
 
         possibleTiles[6] = new Tile("/tiles/two/top_left.png");
         rectangle1.setBounds(possibleTiles[3].getCollisionArea().get(0));
         rectangle2.setBounds(possibleTiles[1].getCollisionArea().get(0));
-        possibleTiles[6].addAvailableMoves(rectangle1, rectangle2);
+        possibleTiles[6].addCollisionArea(rectangle1, rectangle2);
+        possibleTiles[6].addAvailableMoves("down", "right");
 
 
         possibleTiles[7] = new Tile("/tiles/two/top_right.png");
         rectangle1.setBounds(possibleTiles[2].getCollisionArea().get(0));
         rectangle2.setBounds(possibleTiles[3].getCollisionArea().get(0));
-        possibleTiles[7].addAvailableMoves(rectangle1, rectangle2);
+        possibleTiles[7].addCollisionArea(rectangle1, rectangle2);
+        possibleTiles[7].addAvailableMoves("left", "down");
 
 
 
@@ -155,28 +163,32 @@ public class Maze {
         rectangle1.setBounds(possibleTiles[1].getCollisionArea().get(0));
         rectangle2.setBounds(possibleTiles[2].getCollisionArea().get(0));
         rectangle2.setBounds(possibleTiles[3].getCollisionArea().get(0));
-        possibleTiles[8].addAvailableMoves(rectangle1, rectangle2, rectangle3);
+        possibleTiles[8].addCollisionArea(rectangle1, rectangle2, rectangle3);
+        possibleTiles[8].addAvailableMoves("down");
 
 
         possibleTiles[9] = new Tile("/tiles/three/left_open.png");
         rectangle1.setBounds(possibleTiles[0].getCollisionArea().get(0));
         rectangle2.setBounds(possibleTiles[2].getCollisionArea().get(0));
         rectangle2.setBounds(possibleTiles[3].getCollisionArea().get(0));
-        possibleTiles[9].addAvailableMoves(rectangle1, rectangle2, rectangle3);
+        possibleTiles[9].addCollisionArea(rectangle1, rectangle2, rectangle3);
+        possibleTiles[9].addAvailableMoves("left");
 
 
         possibleTiles[10] = new Tile("/tiles/three/right_open.png");
         rectangle1.setBounds(possibleTiles[0].getCollisionArea().get(0));
         rectangle2.setBounds(possibleTiles[1].getCollisionArea().get(0));
         rectangle2.setBounds(possibleTiles[3].getCollisionArea().get(0));
-        possibleTiles[10].addAvailableMoves(rectangle1, rectangle2, rectangle3);
+        possibleTiles[10].addCollisionArea(rectangle1, rectangle2, rectangle3);
+        possibleTiles[10].addAvailableMoves("right");
 
 
         possibleTiles[11] = new Tile("/tiles/three/up_open.png");
         rectangle1.setBounds(possibleTiles[0].getCollisionArea().get(0));
         rectangle2.setBounds(possibleTiles[1].getCollisionArea().get(0));
         rectangle2.setBounds(possibleTiles[2].getCollisionArea().get(0));
-        possibleTiles[11].addAvailableMoves(rectangle1, rectangle2, rectangle3);
+        possibleTiles[11].addCollisionArea(rectangle1, rectangle2, rectangle3);
+        possibleTiles[11].addAvailableMoves("up");
 
 
 
@@ -184,18 +196,21 @@ public class Maze {
         possibleTiles[12] = new Tile("/tiles/straight/right.png");
         rectangle1.setBounds(possibleTiles[0].getCollisionArea().get(0));
         rectangle2.setBounds(possibleTiles[3].getCollisionArea().get(0));
-        possibleTiles[12].addAvailableMoves(rectangle1, rectangle2);
+        possibleTiles[12].addCollisionArea(rectangle1, rectangle2);
+        possibleTiles[12].addAvailableMoves("right", "left");
+
 
         possibleTiles[13] = new Tile("/tiles/straight/up.png");
         rectangle1.setBounds(possibleTiles[1].getCollisionArea().get(0));
         rectangle2.setBounds(possibleTiles[2].getCollisionArea().get(0));
-        possibleTiles[13].addAvailableMoves(rectangle1, rectangle2);
+        possibleTiles[13].addCollisionArea(rectangle1, rectangle2);
+        possibleTiles[13].addAvailableMoves("up", "down");
 
 
         // Extraneous Tiles
         possibleTiles[14] = new Tile("/tiles/start_end/start.png");
         rectangle1.setBounds(1 * getScaleFactor(), 1 * getScaleFactor(), 18 * getScaleFactor(), 18 * getScaleFactor());
-        possibleTiles[3].addAvailableMoves(rectangle1);
+        possibleTiles[14].addCollisionArea(rectangle1);
 
         possibleTiles[15] = new Tile("/tiles/empty.png");
 

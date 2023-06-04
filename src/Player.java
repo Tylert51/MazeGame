@@ -2,12 +2,13 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Player {
 
     private int xCoord;
     private int yCoord;
-    private int speed;
+    private Integer upSpeed, downSpeed, rightSpeed, leftSpeed;
 
     private GamePanel gamePanel;
     private KeyHandler keyHandler;
@@ -19,8 +20,14 @@ public class Player {
     private int spriteCounter;
     private boolean spriteNum1;
 
+    private CollisionChecker collisionChecker;
     private Rectangle collisionArea;
     private boolean colliding;
+
+    private Tile[][] mazeMap ;
+    private Tile previousTile;
+    private Tile currTile;
+
 
     public Player (GamePanel gp, KeyHandler kh) {
 
@@ -35,13 +42,29 @@ public class Player {
 
         colliding = false;
         collisionArea = new Rectangle(8, 3, 32, 45);
+
+        mazeMap = (gamePanel.getMazes())[0].getMazeMap();
+
+        currTile = mazeMap[getCurrTileCoords()[0]] [getCurrTileCoords()[1]];
+    }
+
+    public void addCollisionChecker(CollisionChecker collisionChecker) {
+        this.collisionChecker = collisionChecker;
     }
 
     public void setDefaultValues() {
-        xCoord = 100;
-        yCoord = 100;
-        speed = 4;
+        xCoord = 0 * gamePanel.TILE_SIZE_COL + (2 * gamePanel.SCALE);
+        yCoord = 11 * gamePanel.TILE_SIZE_ROW + (2 * gamePanel.SCALE);
+
+        setDeafultSpeedValues();
         direction = "down";
+    }
+
+    public void setDeafultSpeedValues() {
+        upSpeed = 0;
+        downSpeed = 0;
+        leftSpeed = 0;
+        rightSpeed = 0;
     }
 
     public void getPlayerImage() {
@@ -73,29 +96,66 @@ public class Player {
 
         if(keyHandler.isUpPressed() || keyHandler.isDownPressed() || keyHandler.isLeftPressed() || keyHandler.isRightPressed()) {
 
+            ArrayList<String> availableMoves = new ArrayList<String>();
+            int[] coords = getCurrTileCoords();
+
+            if(coords == null) {
+                previousTile = currTile;
+                availableMoves = previousTile.getAvailableMoves();
+            } else {
+                currTile = mazeMap[coords[0]] [coords[1]];
+                availableMoves = currTile.getAvailableMoves();
+            }
+
+            setDeafultSpeedValues();
+
+            for(String move : availableMoves) {
+                if (move.equals("up")) {
+                    upSpeed = 2;
+                } else if (upSpeed != 2) {
+                    upSpeed = 0;
+                }
+
+                if (move.equals("down")) {
+                    downSpeed = 2;
+                } else if (downSpeed != 2) {
+                    downSpeed = 0;
+                }
+
+                if (move.equals("left")) {
+                    leftSpeed = 2;
+                } else if (leftSpeed != 2) {
+                    leftSpeed = 0;
+                }
+
+                if (move.equals("right")) {
+                    rightSpeed = 2;
+                } else if (rightSpeed != 2) {
+                    rightSpeed = 0;
+                }
+            }
+
+
             if (keyHandler.isUpPressed()) {
                 direction = "up";
-                yCoord -= speed;
+                yCoord -= upSpeed;
 
-            }
-            if (keyHandler.isDownPressed()) {
+            } else if (keyHandler.isDownPressed()) {
                 direction = "down";
-                yCoord += speed;
+                yCoord += downSpeed;
 
-            }
-            if (keyHandler.isLeftPressed()) {
+            } else if (keyHandler.isLeftPressed()) {
                 direction = "left";
-                xCoord -= speed;
+                xCoord -= leftSpeed;
 
-            }
-            if (keyHandler.isRightPressed()) {
+            } else if (keyHandler.isRightPressed()) {
                 direction = "right";
-                xCoord += speed;
+                xCoord += rightSpeed;
 
             }
 
             spriteCounter++;
-            if (spriteCounter > 12) {
+            if (spriteCounter > 24) {    // 12 for 60 FPS (24 for 144 fps)
                 spriteNum1 = !spriteNum1;
                 spriteCounter = 0;
             }
@@ -155,12 +215,45 @@ public class Player {
         return yCoord;
     }
 
-    public Rectangle getCollisionArea() {
-        return collisionArea;
-    }
-
     public String getDirection() {
         return direction;
+    }
+
+    public int[] getCurrTileCoords() {
+        int[] coords = new int[2];
+
+        int xTopLeft = yCoord / gamePanel.TILE_SIZE_ROW;
+        int yTopLeft = xCoord / gamePanel.TILE_SIZE_COL;
+
+        int xTopRight = yCoord / gamePanel.TILE_SIZE_ROW;
+        int yTopRight = (xCoord + (16 * gamePanel.SCALE)) / gamePanel.TILE_SIZE_COL;
+
+        int xBottomLeft = (yCoord + (16 * gamePanel.SCALE)) / gamePanel.TILE_SIZE_ROW;
+        int yBottomLeft = xCoord / gamePanel.TILE_SIZE_COL;
+
+        int xBottomRight = (yCoord + (16 * gamePanel.SCALE)) / gamePanel.TILE_SIZE_ROW;
+        int yBottomRight = (xCoord + (16 * gamePanel.SCALE)) / gamePanel.TILE_SIZE_COL;
+
+        if(xCoordsMatch(xTopLeft, xTopRight, xBottomLeft, xBottomRight) && yCoordsMatch(yTopLeft, yTopRight, yBottomLeft, yBottomRight)) {
+            coords[0] = xTopLeft;
+            coords[1] = yTopLeft;
+        } else {
+            coords = null;
+        }
+
+        return coords;
+    }
+
+    private boolean xCoordsMatch(int x1, int x2, int x3, int x4) {
+        return x1 == x2 && x1 == x3 && x1 == x4;
+    }
+
+    private boolean yCoordsMatch(int y1, int y2, int y3, int y4) {
+        return y1 == y2 && y1 == y3 && y1 == y4;
+    }
+
+    public void setColliding(boolean colliding) {
+        this.colliding = colliding;
     }
 }
 

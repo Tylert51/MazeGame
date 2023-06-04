@@ -1,5 +1,6 @@
 import javax.swing.JPanel;
 import java.awt.*;
+import java.util.Arrays;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -15,16 +16,16 @@ public class GamePanel extends JPanel implements Runnable {
     public final int SCREEN_WIDTH = TILE_SIZE_COL * MAX_SCREEN_COL;
     public final int SCREEN_HEIGHT = TILE_SIZE_ROW * MAX_SCREEN_ROW;
 
-    public final double FPS = 60;
+    public final double FPS = 144;
 
     private Thread gameThread;
     private KeyHandler keyH;
     private Player player;
-    private Maze[] maze;
+    private Maze[] mazes;
     private DrawableMaze drawableMaze;
     private TilePickerPanel drawingPanel;
 
-    CollisionChecker collisionChecker = new CollisionChecker(this);
+    CollisionChecker collisionChecker;
 
     public int currentLevel;
 
@@ -37,12 +38,11 @@ public class GamePanel extends JPanel implements Runnable {
         setFocusable(true);
 
         keyH = new KeyHandler();
-        player = new Player(this, keyH);
 
-        maze = new Maze[4];
+        mazes = new Maze[4];
 
         for(int i = 0; i < 4; i++) {
-            maze[i] = new Maze(this, i + 1);
+            mazes[i] = new Maze(this, i + 1);
         }
 
         //drawableMaze = new DrawableMaze(this);
@@ -51,6 +51,11 @@ public class GamePanel extends JPanel implements Runnable {
 
         drawingPanel = new TilePickerPanel(this, player);
 
+        currentLevel = 1;
+
+        player = new Player(this, keyH);
+        collisionChecker = new CollisionChecker(this);
+        player.addCollisionChecker(collisionChecker);
 
 
     }
@@ -86,6 +91,10 @@ public class GamePanel extends JPanel implements Runnable {
                 // Draw: draw the screen with the update information
                 repaint();
 
+                int[] currTileCoords = player.getCurrTileCoords();
+                System.out.println(Arrays.toString(currTileCoords));
+                //System.out.println(collisionChecker.checkTile());
+
                 delta--;
             }
         }
@@ -104,13 +113,25 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        maze[0].draw(g2);
+        mazes[0].draw(g2);
 
         player.draw(g2);
     }
 
     public TilePickerPanel getDrawingPanel() {
         return drawingPanel;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Maze[] getMazes() {
+        return mazes;
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
     }
 
 }
