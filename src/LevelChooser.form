@@ -26,7 +26,7 @@
               <background color="-16777216"/>
               <font name="Elephant" size="20" style="0"/>
               <foreground color="-1"/>
-              <text value="There are 5 preset levels"/>
+              <text value="There are 2 preset levels"/>
             </properties>
           </component>
           <vspacer id="bd105">

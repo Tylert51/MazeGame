@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class MainMenuGUI extends JFrame implements ActionListener {
 
@@ -54,7 +55,13 @@ public class MainMenuGUI extends JFrame implements ActionListener {
 
         } else if (text.equals("Create")) {
 
-            instantiateGamePanel(2, "");
+            try {
+                instantiateGamePanel(2, "");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
 
         } else if (text.equals("Watch")) {
 
@@ -63,7 +70,7 @@ public class MainMenuGUI extends JFrame implements ActionListener {
     }
 
 
-    public void instantiateGamePanel(int gameMode, String level) {
+    public void instantiateGamePanel(int gameMode, String level) throws IOException, ClassNotFoundException {
 
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

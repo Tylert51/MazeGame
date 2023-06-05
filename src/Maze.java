@@ -34,7 +34,7 @@ public class Maze {
 
             } else {
 
-                mazeIndx = MazeDatabaseReader.getMazeIndexes("src/mazes/custom/level_" + lvl.substring(1) + ".txt");
+                mazeIndx = gamePanel.getListOfCustomMazes().get(Integer.parseInt(lvl.substring(1)) - 1);
 
             }
 
@@ -98,14 +98,9 @@ public class Maze {
 
                 int ind = Integer.parseInt(indx[i][j]);
 
-                if(ind != 0) {
-                    maze[i][j] = possibleTiles[ind];
-                } else {
-                    //int rand = (int) (Math.random() * 14);
-                    //maze[i][j] = possibleTiles[rand];
 
-                    maze[i][j] = possibleTiles[15];
-                }
+                maze[i][j] = possibleTiles[ind];
+
 
             }
         }

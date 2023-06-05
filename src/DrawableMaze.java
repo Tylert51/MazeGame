@@ -8,7 +8,7 @@ public class DrawableMaze extends Maze {
 
     private TilePickerPanel drawingPanel;
     private KeyHandler keyH;
-    private static ArrayList<int[][]> listOfCustomMazes;
+
 
     public DrawableMaze(TilePickerPanel tilePickerPanel,  GamePanel gp, KeyHandler kh) {
         super(gp);
@@ -31,18 +31,6 @@ public class DrawableMaze extends Maze {
 
     }
 
-
-    public void setListOfCustomMazes(ArrayList<int[][]> customMazes) {
-        listOfCustomMazes = customMazes;
-    }
-
-    public ArrayList<int[][]> getListOfCustomMazes() {
-        return listOfCustomMazes;
-    }
-
-    public void addCustomMaze (int[][] customMaze) {
-        listOfCustomMazes.add(customMaze);
-    }
 
     private void print2DArr(Tile[][] mazeMap) {
         for(Tile[] row : mazeMap) {

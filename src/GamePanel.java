@@ -1,6 +1,8 @@
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.event.MouseListener;
 
@@ -34,8 +36,12 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     private int currStraight, currOne, currTwo, currThree;
 
+    private static ArrayList<String[][]> listOfCustomMazes;
 
-    public GamePanel(int gameMode, String level) {
+
+    public GamePanel(int gameMode, String level) throws IOException, ClassNotFoundException {
+
+
 
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setBackground(Color.black);
@@ -43,6 +49,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         setFocusable(true);
 
         addMouseListener(this);
+
+        listOfCustomMazes = FileReadWrite.readFile();
+
 
         currentLevel = level;
         this.gameMode = gameMode;
@@ -195,6 +204,22 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         return gameMode;
     }
 
+    public void setListOfCustomMazes(ArrayList<String[][]> customMazes) {
+        listOfCustomMazes = customMazes;
+    }
+
+    public ArrayList<String[][]> getListOfCustomMazes() {
+        return listOfCustomMazes;
+    }
+
+    public void addCustomMaze (String[][] customMaze) {
+        listOfCustomMazes.add(customMaze);
+    }
+
+    public void clearCustomMazes() {
+        listOfCustomMazes.clear();
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -269,9 +294,21 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
 
             if(drawingPanel.isSaveSelected()) {
-                int[][] mazeMapIndx = convertTileToIndx(mazeMap, possibleTiles);
+                String[][] mazeMapIndx = convertTileToIndx(mazeMap, possibleTiles);
 
-                print2DArr(mazeMapIndx);
+                listOfCustomMazes.add(mazeMapIndx);
+
+                //clearCustomMazes();
+
+                try {
+                    FileReadWrite.writeFile(listOfCustomMazes);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                //print2DArr(mazeMapIndx);
+
+
             }
         }
 
@@ -318,9 +355,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         }
     }
 
-    private void print2DArr(int[][] mazeMap) {
-        for(int[] row : mazeMap) {
-            for(int num : row) {
+    private void print2DArr(String[][] mazeMap) {
+        for(String[] row : mazeMap) {
+            for(String num : row) {
                 System.out.print(num + " ") ;
             }
             System.out.println();
@@ -339,12 +376,12 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         return -1;
     }
 
-    private int[][] convertTileToIndx(Tile[][] maze, Tile[] possibleTiles) {
-        int[][] mazeIndexes = new int[maze.length][maze[0].length];
+    private String[][] convertTileToIndx(Tile[][] maze, Tile[] possibleTiles) {
+        String[][] mazeIndexes = new String[maze.length][maze[0].length];
 
         for(int i = 0; i < maze.length; i++) {
             for (int j = 0; j < maze[0].length; j++) {
-                mazeIndexes[i][j] = getUniversalTileIndx(maze[i][j], possibleTiles);
+                mazeIndexes[i][j] = getUniversalTileIndx(maze[i][j], possibleTiles) + "";
             }
         }
 

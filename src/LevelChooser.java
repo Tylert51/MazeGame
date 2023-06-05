@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class LevelChooser extends JFrame implements ActionListener {
     private JPanel mainPanel;
@@ -34,6 +36,18 @@ public class LevelChooser extends JFrame implements ActionListener {
 
         okayButton.addActionListener(this);
 
+        ArrayList<String[][]> listOfCustomMazes = new ArrayList<String[][]>();
+
+        try {
+            listOfCustomMazes = FileReadWrite.readFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        customLevels.setText("There are " + listOfCustomMazes.size() + " custom levels");
+
 
     }
 
@@ -45,11 +59,17 @@ public class LevelChooser extends JFrame implements ActionListener {
 
         setVisible(false);
 
-        instantiateGamePanel(gameMode, textLevel);
+        try {
+            instantiateGamePanel(gameMode, textLevel);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
 
     }
 
-    public void instantiateGamePanel(int gameMode, String level) {
+    public void instantiateGamePanel(int gameMode, String level) throws IOException, ClassNotFoundException {
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
