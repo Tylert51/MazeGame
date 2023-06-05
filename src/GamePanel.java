@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.event.MouseListener;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 public class GamePanel extends JPanel implements Runnable, MouseListener {
 
@@ -33,6 +34,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     private String currentLevel;
     private int gameMode;
+    private boolean finished;
 
     private int currStraight, currOne, currTwo, currThree;
 
@@ -55,6 +57,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
         currentLevel = level;
         this.gameMode = gameMode;
+        finished = false;
 
         if(gameMode == 1) {
             keyH = new KeyHandler();
@@ -132,6 +135,14 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                     } else {
 
                         update();
+
+                        int[] end = {0, 15};
+
+
+                        if(Arrays.equals(coords, end) && !finished) {
+                            showMessageDialog(this, "Congrats!!!");
+                            finished = true;
+                        }
 
                     }
 
