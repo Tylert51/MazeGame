@@ -11,11 +11,13 @@ public class Tile {
 
     private ArrayList<String> availableMoves;
     private BufferedImage image;
+    private String fileName;
     private ArrayList<Rectangle> collisionArea;
     private boolean colliding;
 
 
     public Tile(String fileName) {
+        this.fileName = fileName;
 
         try {
             image = ImageIO.read(getClass().getResourceAsStream(fileName));
@@ -52,6 +54,10 @@ public class Tile {
 
         availableMoves.addAll(Arrays.asList(moves));
 
+    }
+
+    public String toString() {
+        return fileName;
     }
 
 

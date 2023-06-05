@@ -15,8 +15,6 @@ public class Maze {
 
         mazeMap = new Tile[12][16];
 
-        String[][] mazeIndx = MazeDatabaseReader.getMazeIndexes("src/mazes/level_one.txt");
-
         try {
             instantiateBaseTiles();
         } catch (IOException e) {
@@ -25,7 +23,15 @@ public class Maze {
             throw new RuntimeException(e);
         }
 
-        initializeMaze(mazeMap, mazeIndx);
+        if (panel.getGameMode() == 1) {
+            String[][] mazeIndx = MazeDatabaseReader.getMazeIndexes("src/mazes/level_" + gamePanel.getCurrentLevel() + ".txt");
+
+            initializeMaze(mazeMap, mazeIndx);
+        }
+
+
+
+
     }
 
     public Tile[][] getMazeMap() {
@@ -79,16 +85,17 @@ public class Maze {
 
         for(int i = 0; i < mazeMap.length; i++) {
             for(int j = 0; j < mazeMap[0].length; j++) {
+
                 int ind = Integer.parseInt(indx[i][j]);
 
-            if(ind != 0) {
-                maze[i][j] = possibleTiles[ind];
-            } else {
-                //int rand = (int) (Math.random() * 14);
-                //maze[i][j] = possibleTiles[rand];
+                if(ind != 0) {
+                    maze[i][j] = possibleTiles[ind];
+                } else {
+                    //int rand = (int) (Math.random() * 14);
+                    //maze[i][j] = possibleTiles[rand];
 
-                maze[i][j] = possibleTiles[15];
-            }
+                    maze[i][j] = possibleTiles[15];
+                }
 
             }
         }
