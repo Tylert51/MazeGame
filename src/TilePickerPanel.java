@@ -29,7 +29,9 @@ public class TilePickerPanel extends JPanel implements Runnable, MouseListener {
     private Tile[][] tileMap;
 
     private boolean isTileSelected;
-    private boolean isSettingsSelected;
+    private boolean isRotateSelected;
+    private boolean isSaveSelected;
+
     private int[] mouseCoordsTile;
     private int[] mouseCoordsSetting;
 
@@ -61,7 +63,9 @@ public class TilePickerPanel extends JPanel implements Runnable, MouseListener {
         addMouseListener(this);
 
         isTileSelected = false;
-        isSettingsSelected = false;
+        isRotateSelected = false;
+        isSaveSelected = false;
+
         mouseCoordsTile = new int[2];
         mouseCoordsSetting = new int[2];
 
@@ -133,7 +137,7 @@ public class TilePickerPanel extends JPanel implements Runnable, MouseListener {
             drawSelectBox(g2, mouseCoordsTile[0], mouseCoordsTile[1]);
         }
 
-        if(isSettingsSelected) {
+        if(isRotateSelected || isSaveSelected) {
             drawSelectBoxSettings(g2, mouseCoordsSetting[0], mouseCoordsSetting[1]);
         }
     }
@@ -201,15 +205,24 @@ public class TilePickerPanel extends JPanel implements Runnable, MouseListener {
         if(isMouseOnSettings(mouseCoordCheck)) {
 
             mouseCoordsSetting = getMouseCoords(e);
-            isSettingsSelected = true;
+
+            if(isMouseOnRotate(mouseCoordsSetting)) {
+                isRotateSelected = true;
+                isSaveSelected = false;
+            } else {
+                isSaveSelected = true;
+                isRotateSelected = false;
+            }
 
             selectedSetting = tileMap[mouseCoordsTile[0]]  [mouseCoordsTile[1]];
 
+            System.out.println("fjdkls;ajfk");
+
         } else {
-            isSettingsSelected = false;
+            isRotateSelected = false;
+            isSaveSelected = false;
+
         }
-
-
     }
 
     @Override
@@ -254,8 +267,9 @@ public class TilePickerPanel extends JPanel implements Runnable, MouseListener {
         int[] check2 = {1,3};
         int[] check3 = {3,1};
         int[] check4 = {3,3};
+        int[] check5 = {0,0};
 
-        return (Arrays.equals(mouseCoords, check1) || Arrays.equals(mouseCoords, check2) || Arrays.equals(mouseCoords, check3) || Arrays.equals(mouseCoords, check4));
+        return (Arrays.equals(mouseCoords, check1) || Arrays.equals(mouseCoords, check2) || Arrays.equals(mouseCoords, check3) || Arrays.equals(mouseCoords, check4) || Arrays.equals(mouseCoords, check5) );
     }
 
     public boolean isMouseOnSettings(int[] mouseCoords) {
@@ -266,6 +280,12 @@ public class TilePickerPanel extends JPanel implements Runnable, MouseListener {
         return (Arrays.equals(mouseCoords, check1) || Arrays.equals(mouseCoords, check2));
     }
 
+    public boolean isMouseOnRotate(int[] mouseCoords) {
+        int[] check1 = {6,1};
+
+        return (Arrays.equals(mouseCoords, check1));
+    }
+
     public boolean isTileSelected() {
         return isTileSelected;
     }
@@ -273,4 +293,14 @@ public class TilePickerPanel extends JPanel implements Runnable, MouseListener {
     public Tile getSelectedTile() {
         return selectedTile;
     }
+
+    public boolean isRotateSelected() {
+        return isRotateSelected;
+    }
+
+    public boolean isSaveSelected() {
+        return isSaveSelected;
+    }
+
+
 }

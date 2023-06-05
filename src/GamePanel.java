@@ -23,7 +23,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     private Thread gameThread;
     private KeyHandler keyH;
     private Player player;
-    private Maze[] mazes;
+    private Maze maze;
     private DrawableMaze drawableMaze;
     private TilePickerPanel drawingPanel;
 
@@ -31,6 +31,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     private String currentLevel;
     private int gameMode;
+
+    private int currStraight, currOne, currTwo, currThree;
 
 
     public GamePanel(int gameMode, String level) {
@@ -48,11 +50,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         if(gameMode == 1) {
             keyH = new KeyHandler();
 
-            mazes = new Maze[5];
-
-            for(int i = 0; i < 4; i++) {
-                mazes[i] = new Maze(this, i + 1);
-            }
+            maze = new Maze(this);
 
             addKeyListener(keyH);
 
@@ -67,8 +65,15 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
             drawingPanel = new TilePickerPanel(this, player);
             drawableMaze = new DrawableMaze(drawingPanel, this, keyHandler);
 
-
+            resetTileValues();
         }
+    }
+
+    public void resetTileValues() {
+        currStraight = 1;
+        currOne = 1;
+        currTwo = 1;
+        currThree = 1;
     }
 
     public void startGameThread() {
@@ -127,7 +132,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
 
                 repaint();
-                System.out.println(gameMode);
+
 
 
                 //System.out.println(Arrays.toString(coords));
@@ -156,7 +161,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
 
         if(gameMode == 1) {
-            mazes[0].draw(g2);
+            maze.draw(g2);
             player.draw(g2);
 
 
@@ -178,8 +183,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         return player;
     }
 
-    public Maze[] getMazes() {
-        return mazes;
+    public Maze getMaze() {
+        return maze;
     }
 
     public String getCurrentLevel() {
@@ -199,18 +204,80 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     public void mousePressed(MouseEvent e) {
 
 
-        if(gameMode == 2 && drawingPanel.isTileSelected()) {
+        if(gameMode == 2)  {
+
             int[] mouseCoords = getMouseCoords(e);
             Tile[][] mazeMap = drawableMaze.getMazeMap();
+            Tile[] possibleTiles = Maze.getPossibleTiles();
 
-            Tile selectedTile = drawingPanel.getSelectedTile();
-
-            System.out.println(selectedTile);
-
-            mazeMap[mouseCoords[0]] [mouseCoords[1]] = selectedTile;
+            if(drawingPanel.isTileSelected()) {
 
 
+                Tile selectedTile = drawingPanel.getSelectedTile();
+                selectedTile = possibleTiles[getUniversalTileIndx(selectedTile, possibleTiles)];
+
+                mazeMap[mouseCoords[0]][mouseCoords[1]] = selectedTile;
+
+                resetTileValues();
+
+            }
+            if(drawingPanel.isRotateSelected() && !(mazeMap[mouseCoords[0]] [mouseCoords[1]].equals(possibleTiles[15]) || mazeMap[mouseCoords[0]] [mouseCoords[1]].equals(possibleTiles[16]))) {
+
+
+                Tile[] straightTiles = {possibleTiles[12], possibleTiles[13]};
+
+                Tile[] oneTiles = {possibleTiles[1], possibleTiles[3], possibleTiles[2], possibleTiles[0]};
+
+                Tile[] twoTiles = {possibleTiles[6], possibleTiles[7], possibleTiles[5], possibleTiles[4]};
+
+                Tile[] threeTiles = {possibleTiles[10], possibleTiles[8], possibleTiles[9], possibleTiles[11]};
+
+                Tile currTile = mazeMap[mouseCoords[0]][mouseCoords[1]];
+
+
+
+                if (idxOfTile(straightTiles, currTile) != -1) {
+
+                    mazeMap[mouseCoords[0]][mouseCoords[1]] = straightTiles[currStraight];
+
+                    currStraight += 1;
+                    currStraight %= 2;
+
+                } else if (idxOfTile(oneTiles, currTile) != -1) {
+
+                    mazeMap[mouseCoords[0]][mouseCoords[1]] = oneTiles[currOne];
+
+                    currOne += 1;
+                    currOne %= 4;
+
+                } else if (idxOfTile(twoTiles, currTile) != -1) {
+
+                    mazeMap[mouseCoords[0]][mouseCoords[1]] = twoTiles[currTwo];
+
+                    currTwo += 1;
+                    currTwo %= 4;
+
+                } else if (idxOfTile(threeTiles, currTile) != -1) {
+
+                    mazeMap[mouseCoords[0]][mouseCoords[1]] = threeTiles[currThree];
+
+                    currThree += 1;
+                    currThree %= 4;
+
+                }
+            }
+
+
+            if(drawingPanel.isSaveSelected()) {
+                int[][] mazeMapIndx = convertTileToIndx(mazeMap, possibleTiles);
+
+                print2DArr(mazeMapIndx);
+            }
         }
+
+
+
+
     }
 
     @Override
@@ -249,5 +316,62 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
             }
             System.out.println();
         }
+    }
+
+    private void print2DArr(int[][] mazeMap) {
+        for(int[] row : mazeMap) {
+            for(int num : row) {
+                System.out.print(num + " ") ;
+            }
+            System.out.println();
+        }
+    }
+
+    private int idxOfTile (Tile[] tiles, Tile search) {
+        for(int i = 0; i < tiles.length; i++) {
+            Tile tile = tiles[i];
+
+            if(tile.equals(search)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private int[][] convertTileToIndx(Tile[][] maze, Tile[] possibleTiles) {
+        int[][] mazeIndexes = new int[maze.length][maze[0].length];
+
+        for(int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[0].length; j++) {
+                mazeIndexes[i][j] = getUniversalTileIndx(maze[i][j], possibleTiles);
+            }
+        }
+
+        return mazeIndexes;
+    }
+
+    private int getUniversalTileIndx (Tile tile, Tile[] possibleTiles) {
+        int tempIndx = idxOfTile(possibleTiles, tile);
+
+        if(tempIndx != -1 && tempIndx != 16) {
+            return tempIndx;
+        }
+
+        if(tile.getFileName().equals("/tiles/draw/straight.png")) {
+            return 12;
+
+        } else  if(tile.getFileName().equals("/tiles/draw/one.png")) {
+            return 1;
+
+        } else  if(tile.getFileName().equals("/tiles/draw/two.png")) {
+            return 6;
+
+        } else  if(tile.getFileName().equals("/tiles/draw/three.png")) {
+            return 10;
+        }
+
+        return 15;
+
     }
 }

@@ -60,5 +60,13 @@ public class Tile {
         return fileName;
     }
 
+    public boolean equals(Tile other) {
+        return this.fileName.equals(other.fileName);
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
 
 }

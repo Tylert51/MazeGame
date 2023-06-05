@@ -40,7 +40,7 @@ public class Player {
         colliding = false;
         collisionArea = new Rectangle(8, 3, 32, 45);
 
-        mazeMap = (gamePanel.getMazes())[0].getMazeMap();
+        mazeMap = (gamePanel.getMaze()).getMazeMap();
 
         currTile = mazeMap[getCurrTileCoords()[0]] [getCurrTileCoords()[1]];
     }

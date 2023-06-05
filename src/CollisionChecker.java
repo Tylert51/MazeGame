@@ -4,16 +4,16 @@ public class CollisionChecker {
 
     private GamePanel gamePanel;
     private Player player;
-    private Maze[] mazes;
+    private Maze maze;
 
     public CollisionChecker(GamePanel gp) {
         gamePanel = gp;
         player = gp.getPlayer();
-        mazes = gp.getMazes();
+        maze = gp.getMaze();
     }
 
     public ArrayList<String> checkTile(Player player) {
-        Maze maze = mazes[0];
+
         Tile[][] tileMap = maze.getMazeMap();
 
         int[] currTileCoords = player.getCurrTileCoords();

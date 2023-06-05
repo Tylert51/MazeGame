@@ -5,13 +5,13 @@ import java.io.IOException;
 public class Maze {
 
     protected Tile[][] mazeMap;
-    protected int level;
-    protected GamePanel gamePanel;
-    protected Tile[] possibleTiles;
 
-    public Maze(GamePanel panel, int lvl) {
+    protected GamePanel gamePanel;
+    protected static Tile[] possibleTiles;
+
+    public Maze(GamePanel panel) {
         gamePanel = panel;
-        level = lvl;
+
 
         mazeMap = new Tile[12][16];
 
@@ -24,7 +24,19 @@ public class Maze {
         }
 
         if (panel.getGameMode() == 1) {
-            String[][] mazeIndx = MazeDatabaseReader.getMazeIndexes("src/mazes/level_" + gamePanel.getCurrentLevel() + ".txt");
+            String lvl = gamePanel.getCurrentLevel();
+
+            String[][] mazeIndx;
+
+            if(lvl.contains("p")) {
+
+                mazeIndx = MazeDatabaseReader.getMazeIndexes("src/mazes/level_" + lvl.substring(1) + ".txt");
+
+            } else {
+
+                mazeIndx = MazeDatabaseReader.getMazeIndexes("src/mazes/custom/level_" + lvl.substring(1) + ".txt");
+
+            }
 
             initializeMaze(mazeMap, mazeIndx);
         }
@@ -42,11 +54,9 @@ public class Maze {
         mazeMap = map;
     }
 
-    public int getLevel() {
-        return level;
-    }
 
-    public Tile[] getPossibleTiles() {
+
+    public static Tile[] getPossibleTiles() {
         return possibleTiles;
     }
 
@@ -220,13 +230,15 @@ public class Maze {
         possibleTiles[14].addCollisionArea(rectangle1);
 
         possibleTiles[15] = new Tile("/tiles/empty.png");
+        possibleTiles[15].addAvailableMoves("up", "down", "left", "right");
 
-        possibleTiles[16] = new Tile("/tiles/two/top_left_blue.png");
+        possibleTiles[16] = new Tile("/tiles/two/top_left_gray.png");
 
     }
 
     public int getScaleFactor() {
         return gamePanel.SCALE;
     }
+
 
 }
