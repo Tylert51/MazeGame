@@ -25,7 +25,6 @@ public class Player {
     private boolean colliding;
 
     private Tile[][] mazeMap ;
-    //private Tile previousTile;
     private Tile currTile;
 
 
@@ -89,13 +88,10 @@ public class Player {
 
         if(keyHandler.isUpPressed() || keyHandler.isDownPressed() || keyHandler.isLeftPressed() || keyHandler.isRightPressed()) {
 
+            setDirection();
+
             ArrayList<String> availableMoves = new ArrayList<String>();
-
-            int[] coords = getCurrTileCoords();
-
-
-            currTile = mazeMap[coords[0]] [coords[1]];
-            availableMoves = currTile.getAvailableMoves();
+            availableMoves = collisionChecker.checkTile(this);
 
 
             setDeafultSpeedValues();
@@ -128,19 +124,15 @@ public class Player {
 
 
             if (keyHandler.isUpPressed()) {
-                direction = "up";
                 yCoord -= upSpeed;
 
             } else if (keyHandler.isDownPressed()) {
-                direction = "down";
                 yCoord += downSpeed;
 
             } else if (keyHandler.isLeftPressed()) {
-                direction = "left";
                 xCoord -= leftSpeed;
 
             } else if (keyHandler.isRightPressed()) {
-                direction = "right";
                 xCoord += rightSpeed;
 
             }
@@ -174,6 +166,41 @@ public class Player {
 
         g2.drawImage(currImg, xCoord, yCoord, currImg.getWidth() * gamePanel.SCALE, currImg.getHeight() * gamePanel.SCALE, null);
 
+    }
+
+    public void setDirection() {
+        if (keyHandler.isUpPressed()) {
+            direction = "up";
+
+        } else if (keyHandler.isDownPressed()) {
+            direction = "down";
+
+        } else if (keyHandler.isLeftPressed()) {
+            direction = "left";
+
+        } else if (keyHandler.isRightPressed()) {
+            direction = "right";
+
+        }
+    }
+
+    public String invertDirection(String direction) {
+        switch (direction) {
+            case "up" -> {
+                return "down";
+            }
+            case "down" -> {
+                return "up";
+            }
+            case "left" -> {
+                return "right";
+            }
+            case "right" -> {
+                return "left";
+            }
+        }
+
+        return null;
     }
 
     public int getXCoord() {

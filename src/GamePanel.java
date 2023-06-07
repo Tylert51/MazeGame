@@ -251,6 +251,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
                 Tile selectedTile = drawingPanel.getSelectedTile();
                 selectedTile = possibleTiles[getUniversalTileIndx(selectedTile, possibleTiles)];
+                if(selectedTile.equals(possibleTiles[15])) {
+                    selectedTile = possibleTiles[16];
+                }
 
                 mazeMap[mouseCoords[0]][mouseCoords[1]] = selectedTile;
 
